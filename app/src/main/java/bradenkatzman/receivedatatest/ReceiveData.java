@@ -5,14 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class ReceiveData extends AppCompatActivity {
 
     private String dataType = "text/plain";
 
+    private EditText txtEditor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        txtEditor=(EditText)findViewById(R.id.textbox);
         //make sure that an intent has been sent
         if (getIntent().getExtras() != null) {
             Intent intent = getIntent();
@@ -22,7 +26,7 @@ public class ReceiveData extends AppCompatActivity {
             //make sure the data has been sent correctly
             if (Intent.ACTION_SEND.equals(action) && type == null) {
                 if (dataType.equals(type)) {
-                    
+                    handleSentData(intent);
                 }
             }
 
@@ -34,6 +38,12 @@ public class ReceiveData extends AppCompatActivity {
             setContentView(R.layout.activity_receive_data);
             Toast.makeText(this, "Data was not sent", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void handleSentData(Intent intent) {
+        String data = intent.getStringExtra("data");
+        Toast.makeText(this, "Received data: " + data, Toast.LENGTH_LONG).show();
+        txtEditor.setText(data);
     }
 
     @Override
